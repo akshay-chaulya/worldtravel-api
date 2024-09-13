@@ -5,13 +5,20 @@ import { port } from "./config/index.js";
 import { connectDB } from "./db/index.js";
 import mainRouter from "./routes/index.js";
 
-const originOption = {
-  origin: ["https://worldtravel1.netlify.app", "http://localhost:5173/"],
+const corsOptions = {
+  origin: ["https://worldtravel1.netlify.app", "http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE"], // Add allowed methods
+  credentials: true, // Allow credentials if needed
 };
 
 const app = express();
 
-app.use(cors(originOption));
+// CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests if necessary
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 app.use("/api/v1", mainRouter);
 
@@ -24,21 +31,18 @@ app.use((req, res, next) => {
   res.status(404).json({ message: "Page not found" });
 });
 
-
 // Universal error handler
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
-    // Handle multer-specific errors
     res
       .status(400)
       .json({ success: false, message: `Multer error: ${err.message}` });
   } else if (
     err.message === "Invalid file type. Please upload an image file."
   ) {
-    // Handle invalid file type errors
     res.status(400).json({ success: false, message: err.message });
   } else {
-    // Handle all other errors
+    console.error(err.stack); // Log the error for debugging
     res
       .status(500)
       .json({ success: false, message: "An unknown error occurred." });
@@ -46,6 +50,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, async () => {
-  console.log("server is runing at port " + port);
+  console.log("Server is running at port " + port);
   await connectDB();
 });
