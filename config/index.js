@@ -7,7 +7,6 @@ const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET;
 const mailtrapEndpoint = process.env.MAILTRAP_ENDPOINT;
 const mailtrapToken = process.env.MAILTRAP_TOKEN;
-const cookieSecure = process.env.NODE_ENV === "production";
 const clientUrl = process.env.CLIENT_URL;
 const passForSendEmail = process.env.MY_EMAIL_APP_PASSWORD;
 const verificationTokenExpireAt = Date.now() + 24 * 60 * 60 * 1000; // in 24 hours
@@ -21,7 +20,6 @@ export {
   cloudinaryCloudName,
   cloudinaryApiSecret,
   cloudinaryApiKey,
-  cookieSecure,
   mailtrapEndpoint,
   mailtrapToken,
   clientUrl,
