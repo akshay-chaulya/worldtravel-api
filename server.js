@@ -5,9 +5,13 @@ import { port } from "./config/index.js";
 import { connectDB } from "./db/index.js";
 import mainRouter from "./routes/index.js";
 
+const originOption = {
+  origin: ["https://worldtravel1.netlify.app", "http://localhost:5173/"],
+};
+
 const app = express();
-// https://worldtravel1.netlify.app
-app.use(cors({origin: "https://worldtravel1.netlify.app"}));
+
+app.use(cors(originOption));
 app.use(express.json());
 app.use("/api/v1", mainRouter);
 
