@@ -32,7 +32,6 @@ const verifyAuth = async (req, res, next) => {
     req.id = decoded.id;
     next();
   } catch (error) {
-    console.log("Error occure in token verify: " + err);
     errorHandler(res, error);
   }
 };
