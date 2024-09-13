@@ -6,8 +6,8 @@ import { connectDB } from "./db/index.js";
 import mainRouter from "./routes/index.js";
 
 const app = express();
-
-app.use(cors());
+// https://worldtravel1.netlify.app
+app.use(cors({origin: "https://worldtravel1.netlify.app"}));
 app.use(express.json());
 app.use("/api/v1", mainRouter);
 
