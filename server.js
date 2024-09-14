@@ -37,6 +37,9 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
 app.use(express.json());
+app.get("/", (req, res) => {
+  res.json({ message: "working" });
+});
 app.use("/api/v1", mainRouter);
 
 // Handle 404 errors (undefined routes)
