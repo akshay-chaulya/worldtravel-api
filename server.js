@@ -12,7 +12,7 @@ import { login } from "./controllers/auth.controller.js";
 //   credentials: true, // Allow credentials if needed
 // };
 
-const allowlist = ["https://worldtravel1.netlify.app", "http://localhost:5173"];
+const allowlist = ["https://worldtravel-taupe.vercel.app/login", "http://localhost:5173"];
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions;
   if (allowlist.indexOf(req.header("Origin")) !== -1) {
