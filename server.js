@@ -29,7 +29,7 @@ const app = express();
 app.use(cors(corsOptionsDelegate));
 
 // Handle preflight requests if necessary
-app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptionsDelegate));
 
 app.use(express.json());
 
