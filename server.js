@@ -4,6 +4,7 @@ import multer from "multer";
 import { port } from "./config/index.js";
 import { connectDB } from "./db/index.js";
 import mainRouter from "./routes/index.js";
+import { login } from "./controllers/auth.controller.js";
 
 // const corsOptions = {
 //   origin: ["https://worldtravel1.netlify.app", "http://localhost:5173"],
@@ -13,7 +14,10 @@ import mainRouter from "./routes/index.js";
 
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = ["https://worldtravel1.netlify.app", "http://localhost:5173"]
+    const allowedOrigins = [
+      "https://worldtravel1.netlify.app",
+      "http://localhost:5173",
+    ];
 
     // Allow requests with no 'origin' (e.g., mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -26,7 +30,6 @@ const corsOptions = {
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"], // Add any other headers you expect to send
 };
-
 
 const app = express();
 
@@ -41,6 +44,7 @@ app.get("/", (req, res) => {
   res.json({ message: "working" });
 });
 app.use("/api/v1", mainRouter);
+app.post("/api/v1/auth/login", login);
 
 // Handle 404 errors (undefined routes)
 // app.use((req, res, next) => {
