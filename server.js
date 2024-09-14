@@ -46,7 +46,11 @@ app.use((req, res, next) => {
 
 // Universal error handler
 app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
+  if (err.message === "Not allowed by CORS") {
+    res
+      .status(403)
+      .json({ success: false, message: "CORS Error: " + err.message });
+  } else if (err instanceof multer.MulterError) {
     res
       .status(400)
       .json({ success: false, message: `Multer error: ${err.message}` });
