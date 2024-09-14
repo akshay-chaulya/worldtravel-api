@@ -12,32 +12,24 @@ import { login } from "./controllers/auth.controller.js";
 //   credentials: true, // Allow credentials if needed
 // };
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "https://worldtravel1.netlify.app",
-      "http://localhost:5173",
-    ];
-
-    // Allow requests with no 'origin' (e.g., mobile apps or curl requests)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"], // Add any other headers you expect to send
+const allowlist = ["http://example1.com", "http://example2.com"];
+const corsOptionsDelegate = function (req, callback) {
+  let corsOptions;
+  if (allowlist.indexOf(req.header("Origin")) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 const app = express();
 
 // CORS middleware
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsDelegate));
 
 // Handle preflight requests if necessary
-// app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 
