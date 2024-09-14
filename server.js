@@ -31,10 +31,10 @@ const corsOptions = {
 const app = express();
 
 // CORS middleware
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Handle preflight requests if necessary
-app.options("*", cors(corsOptions));
+// app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.get("/", (req, res) => {
