@@ -5,10 +5,23 @@ import { port } from "./config/index.js";
 import { connectDB } from "./db/index.js";
 import mainRouter from "./routes/index.js";
 
+// const corsOptions = {
+//   origin: ["https://worldtravel1.netlify.app", "http://localhost:5173"],
+//   methods: ["GET", "POST", "PUT", "DELETE"], // Add allowed methods
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
+
+const allowedOrigins = ["https://worldtravel1.netlify.app", "http://localhost:5173"];
+
 const corsOptions = {
-  origin: ["https://worldtravel1.netlify.app", "http://localhost:5173"],
-  methods: ["GET", "POST", "PUT", "DELETE"], // Add allowed methods
-  credentials: true, // Allow credentials if needed
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    allowedHeaders: "Content-Type", 
 };
 
 const app = express();
