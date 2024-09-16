@@ -6,6 +6,7 @@ import {
   cloudinaryApiSecret,
   cloudinaryCloudName,
 } from "../config/index.js";
+import { optimizeImage } from "../utils/index.js";
 
 cloudinary.config({
   cloud_name: cloudinaryCloudName,
@@ -15,20 +16,24 @@ cloudinary.config({
 
 const uploadFile = async (filePath) => {
   if (!filePath) return null;
+  const optimizeImagePath = optimizeImage(filePath);
   try {
-    const response = await cloudinary.uploader.upload(filePath, {
-      folder: 'worldtravel_app_users_logos', // Save the image in a 'logos' folder
-      transformation: [
-        { width: 200, height: 200, crop: 'fit' }, // Adjust size to a typical logo size
-        { quality: 'auto' }, // Automatically adjust quality
-        { fetch_format: 'png' } // Save as PNG format
-      ],
-    })
+    const response = await cloudinary.uploader.upload(optimizeImagePath, {
+      folder: "worldtravel_app_users_logos", // Save the image in a 'logos' folder
+      timeout: 12 * 10000,
+    });
+    console.log(response);
     return response.secure_url;
   } catch (err) {
+    console.error("Error uploading file:", err);
     return null;
   } finally {
-    fs.unlinkSync(filePath);
+    try {
+      fs.unlinkSync(filePath); // Delete the original file
+      fs.unlinkSync(`${filePath}-optimized.jpg`); // Delete the optimized file
+    } catch (deleteError) {
+      console.error("Error deleting file:", deleteError);
+    }
   }
 };
 

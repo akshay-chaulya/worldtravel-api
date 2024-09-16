@@ -48,6 +48,7 @@ export const signup = async (req, res) => {
     // Generate salt and hash password
     const hashPassword = await generateHashPassword(password);
 
+    console.log(req.file);
     // upload avatar image in cloudinary
     if (req.file?.path) {
       req.avatarUrl = await uploadFile(req.file.path);
