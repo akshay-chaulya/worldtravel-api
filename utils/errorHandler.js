@@ -1,4 +1,5 @@
 const errorHandler = (res, error) => {
+  
   return res.status(error.status || 500).json({
     message: error.status
       ? error.message

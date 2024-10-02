@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { jwtPass } from "../config/index.js";
 import { User } from "../models/index.js";
 import errorHandler from "../utils/errorHandler.js";
+import responseHandler from "../utils/responseHandler.js";
 
 const verifyAuth = async (req, res, next) => {
   try {
@@ -16,7 +17,8 @@ const verifyAuth = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, jwtPass);
+    const decoded = jwt.decode(token, jwtPass);
+    
     if (!decoded?.id)
       throw {
         message: "Authentication problem. Inside token have't any id",
@@ -32,7 +34,11 @@ const verifyAuth = async (req, res, next) => {
     req.id = decoded.id;
     next();
   } catch (error) {
-    errorHandler(res, error);
+    if (error.name == "TokenExpiredError") {
+      return responseHandler(res, {success: false, expired: true})
+    } else{
+      errorHandler(res, error);
+    }
   }
 };
 

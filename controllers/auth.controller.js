@@ -272,6 +272,7 @@ export const checkAuth = async (req, res) => {
 
     return responseHandler(res, { success: true, user });
   } catch (error) {
+    console.log("Error in checkAuth controler: ", error)
     errorHandler(res, error);
   }
 };
