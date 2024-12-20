@@ -14,7 +14,7 @@ import { login } from "./controllers/auth.controller.js";
 
 const allowlist = [
   "https://worldtravel-taupe.vercel.app",
-  "https://worldtravel-o5mn3mzsa-akshays-projects-a6b118a5.vercel.app",
+  "https://worldtravel-m8obm2zls-akshays-projects-a6b118a5.vercel.app",
   "http://localhost:5173",
 ];
 const corsOptionsDelegate = function (req, callback) {
